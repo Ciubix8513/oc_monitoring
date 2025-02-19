@@ -5,7 +5,7 @@ local interval = 10
 
 while true do
   local data = metrics.get_metrics()
-  networking.send_metrics(data, interval)
+  pcall(networking.send_metrics, data, interval)
   print("sent some metrics")
 
   os.sleep(interval)

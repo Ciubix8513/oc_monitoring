@@ -64,31 +64,32 @@ local function get_metrics()
     index = index + 1
   end
 
-  local gt           = component.gt_machine
+  local res, gt = pcall(component.getPrimary, "gt_machine")
+  if res == true then
+    local eu           = gt.getEUStored()
+    local data         = gt.getSensorInformation()
 
-  local eu           = gt.getEUStored()
-  local data         = gt.getSensorInformation()
+    -- Avg EU IN: 102,007,470 (last 5 seconds)
+    local eui          = extract_eu(data[10])
+    -- Avg EU OUT: 102,007,470 (last 5 seconds)
+    local euo          = extract_eu(data[11])
 
-  -- Avg EU IN: 102,007,470 (last 5 seconds)
-  local eui          = extract_eu(data[10])
-  -- Avg EU OUT: 102,007,470 (last 5 seconds)
-  local euo          = extract_eu(data[11])
-
-  metrics[index]     = {
-    type = "energy",
-    name = "eu_stored",
-    count = eu
-  }
-  metrics[index + 1] = {
-    type = "energy",
-    name = "eu_input",
-    count = eui
-  }
-  metrics[index + 2] = {
-    type = "energy",
-    name = "eu_output",
-    count = euo
-  }
+    metrics[index]     = {
+      type = "energy",
+      name = "eu_stored",
+      count = eu
+    }
+    metrics[index + 1] = {
+      type = "energy",
+      name = "eu_input",
+      count = eui
+    }
+    metrics[index + 2] = {
+      type = "energy",
+      name = "eu_output",
+      count = euo
+    }
+  end
 
   return metrics
 end
