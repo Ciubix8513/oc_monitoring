@@ -1,6 +1,5 @@
 local function get_username()
-  return
-  "USERNAME_HERE"
+  return "USERNAME_HERE"
 end
 
 local function get_password()

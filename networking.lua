@@ -13,16 +13,16 @@ local function get_time()
   return result
 end
 
-local function send_metrics(data, interval)
+local function send_metrics(data)
   --construct the resulting data
-  local out = "["
-  local time = get_time()
+  local out = ""
+  local time = get_time() .. "000"
 
   -- Table of tables
   for _, d in pairs(data) do
     local name = d.name:gsub("%s+", "_"):lower()
     local datum = string.format("{ \"metric\": {\"__name__\":\"%s.%s\"}, \"values\":[%s], \"timestamps\":[%s] }\n",
-      d.type, name, interval, d.count, time * 1000)
+      d.type, name, d.count, time)
 
     out = out .. datum
   end
