@@ -1,6 +1,7 @@
 local internet = require("internet")
 local secrets = require("secrets")
 local config = require("config")
+local component = require("component")
 
 
 local function get_time()
@@ -27,12 +28,11 @@ local function send_metrics(data, interval)
   end
 
 
-  local key = secrets.get_key()
-  local user_id = secrets.get_user_id()
+  local auth_data = component.data.encode64(string.format("%s:%s", secrets.get_username(), secrets.get_password()))
 
   local header = {
     ["Content-Type"] = "application/json",
-    ["Authorization"] = string.format("Bearer %s:%s", user_id, key)
+    ["Authorization"] = string.format("Basic %s", auth_data)
   }
 
   local url = config.get_config().url
