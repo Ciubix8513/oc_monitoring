@@ -16,25 +16,15 @@ local function send_metrics(data, interval)
   --construct the resulting data
   local out = "["
   local time = get_time()
-  local len = #data
-  local count = 1
 
   -- Table of tables
   for _, d in pairs(data) do
     local name = d.name:gsub("%s+", "_"):lower()
-    local datum = string.format("{ \"name\":\"%s.%s\", \"interval\": %s, \"value\":%s, \"time\":%s }",
-      d.type, name, interval, d.count, time)
+    local datum = string.format("{ \"metric\": {\"__name__\":\"%s.%s\"}, \"values\":[%s], \"timestamps\":[%s] }\n",
+      d.type, name, interval, d.count, time * 1000)
 
     out = out .. datum
-
-    if count ~= len then
-      out = out .. ","
-    end
-
-    count = count + 1
   end
-
-  out = out .. "]"
 
 
   local key = secrets.get_key()
