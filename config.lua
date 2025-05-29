@@ -1,6 +1,6 @@
 local function get_config()
   return {
-    url = "GRAPHITE_URL_HERE"
+    url = "VICTORIA METRICS API URL HERE"
   }
 end
 
